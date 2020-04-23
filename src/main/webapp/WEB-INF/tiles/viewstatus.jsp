@@ -14,25 +14,22 @@
 		<c:forEach var="pageNumber" begin="1" end="${page.totalPages}">		<%--getTotalPages  returns the number of total pages()--%>
 		
 		<c:choose>
-		
-			<c:when test="${page.number != pageNumber }">
+			<c:when test="${page.number != pageNumber -1}">							<%-- page.number is getting current page --%>
 				<a href="${url}?p=${pageNumber}"><c:out value="${pageNumber}"/></a>  <%--make hyperlinks of page numbers --%>
 			</c:when>
 			
 			<c:otherwise>
-				<strong><c:out value="${pageNumber}"/></strong>
+				<strong><c:out value="${pageNumber}"/></strong>		<%--making current page bold in list of pages--%>
 			</c:otherwise>
 		</c:choose>
 		
-		
-			
-			
 			<c:if test="${pageNumber !=  page.totalPages}">                 <%--don't display | after last page --%>
 				|
 			</c:if>
 		
 		</c:forEach>
 	</div>
+
 <%--Displaying status uppdates --%>	
 <c:forEach  var="statusUpdate"  items="${page.content}">	<%--looping throw page content (status updates)--%>
 	
@@ -43,7 +40,7 @@
 				</div>
 			<div class="panel-body">
 
-				<c:out value="${statusUpdate.text}"/> <%--displays latest text message --%>
+				<c:out value="${statusUpdate.text}"/> <%--displays statusupdate text message --%>
 			</div>
 		</div>
  
