@@ -7,6 +7,7 @@
 <c:set var="block" value="${empty param.b ? 0: param.b}"/>       	<%--if block.b is empty block.b=0 otherwise set bolock.b to that value --%>
 
 Block :${block}
+
 <div class="pagination">
 
 <a href="${url}?b=${block - 1}">&lt;&lt;</a>												<%--<< block navigation in pagination &lt = less than--%>
