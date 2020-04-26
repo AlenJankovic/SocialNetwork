@@ -25,8 +25,16 @@ public class PageController {
 	private StatusUpdateService statusUpdateService;
 	
 	@RequestMapping("/")
-	String home() {
-		return "app.homepage";
+	ModelAndView home(ModelAndView modelAndView) {
+		
+		modelAndView.setViewName("app.homepage");
+		
+		StatusUpdate statusUpdate = statusUpdateService.getLatest();
+		
+		modelAndView.getModel().put("statusUpdate", statusUpdate);
+		
+		
+		return modelAndView;
 		
 	}
 	
@@ -35,50 +43,6 @@ public class PageController {
 		return "app.about";
 	}
 	
-	@RequestMapping(value="/viewstatus", method= RequestMethod.GET)
-	ModelAndView viewStatus(ModelAndView modelAndView, @RequestParam(name="p", defaultValue="1")int pageNumber) { //@RequestParam is default value of page in case if don't have som page
 		
-		Page<StatusUpdate> page = statusUpdateService.getPage(pageNumber);
-		
-		modelAndView.getModel().put("page", page);
-		
-		modelAndView.setViewName("app.viewStatus");
-		
-		return modelAndView;
-		
-	}
-	
-	@RequestMapping(value="/addstatus", method=RequestMethod.GET)
-	ModelAndView addStatus(ModelAndView modelAndView, @ModelAttribute("statusUpdate")StatusUpdate statusUpdate) {
-		
-		modelAndView.setViewName("app.addStatus");
-		
-		StatusUpdate latestStatusUpdate = statusUpdateService.getLatest();
-		
-		modelAndView.getModel().put("latestStatusUpdate",latestStatusUpdate);
-		
-		return modelAndView;
-	}
-	
-	@RequestMapping(value="/addstatus", method=RequestMethod.POST)
-	
-	ModelAndView addStatus(ModelAndView modelAndView, @Valid StatusUpdate statusUpdate, BindingResult result) {
-		
-		modelAndView.setViewName("app.addStatus");
-		
-		if(!result.hasErrors()) {						//if validation is ok save an and clear text box
-		
-		statusUpdateService.save(statusUpdate);
-		modelAndView.getModel().put("statusUpdate", new StatusUpdate());
-		
-		}
-		
-		StatusUpdate latestStatusUpdate = statusUpdateService.getLatest();		//Update statusbox with latest status
-		
-		modelAndView.getModel().put("latestStatusUpdate",latestStatusUpdate);
-		
-		
-		return modelAndView;
-	}	
 
 }

@@ -4,31 +4,43 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="ja"%>   <%--Custom tag --%>
 
-
-<c:url var="url" value="/viewstatus"/>			<%--c:url tag is adding automat. if there is contextRoot  --%>
+<%--c:url tag is adding automat. if there is contextRoot  --%>
+<c:url var="url" value="/viewstatus"/>			
 
 <div class="row">
 
 	<div class="col-md-8 col-md-offset-2">
 
 <%--PAGINATION --%>	
-		
-		 <ja:pagination url="${url}" page="${page}"/>		<%--passing attributes to custom pagination tag (ja)--%>
-
+		<%--passing attributes to custom pagination tag (ja)--%>
+		 <ja:pagination url="${url}" page="${page}" size="3"/>	
+		 	
 <%--Displaying status uppdates --%>	
 <c:forEach  var="statusUpdate"  items="${page.content}">	<%--looping throw page content (status updates)--%>
-	
-	<div class="panel panel-default">
+
+			<c:url var="editLink" value="/editstatus?id=${statusUpdate.id }"></c:url>
+			<c:url var="deleteLink" value="/deletestatus?id=${statusUpdate.id }"></c:url>
+
+			<div class="panel panel-default">
 
 				<div class="panel-heading">
-					<div class="panel-title">Status Update added on <fmt:formatDate pattern="E  d/MM/y  H:mm:s" value="${statusUpdate.added}"/> </div><%--displays datum in pattern--%>
+					<%--displays datum in pattern--%>
+					<div class="panel-title">
+						Status Update added on
+						<fmt:formatDate pattern="E  d/MM/y  H:mm:ss"
+							value="${statusUpdate.added}" />
+					</div>
 				</div>
-			<div class="panel-body">
+				<div class="panel-body">
+					<%--displays statusupdate text message --%>
+					<div>${statusUpdate.text}</div>
 
-				<c:out value="${statusUpdate.text}"/> <%--displays statusupdate text message --%>
+					<div class="edit-links pull-right">
+						<a href="${editLink}">edit</a> | <a onclick="return confirm('Do you want delete status update');" href="${deleteLink}">delete</a>
+					</div>
+				</div>
 			</div>
-		</div>
- 
-</c:forEach>
+
+		</c:forEach>
 </div>
 </div>

@@ -13,7 +13,7 @@ import com.examen.model.StatusUpdateDao;
 @Service
 public class StatusUpdateService {
 	
-	private final static int PAGESIZE= 3;	
+	private final static int PAGESIZE= 10;	
 	
 	@Autowired
 	private StatusUpdateDao statusUpdateDao;
@@ -29,10 +29,20 @@ public class StatusUpdateService {
 	
 	//Pagination-getting page
 	public Page<StatusUpdate> getPage(int pageNumber){
-		PageRequest request = PageRequest.of(pageNumber, PAGESIZE, Sort.Direction.DESC, "added"); //making request of given page,
+		PageRequest request = PageRequest.of(pageNumber -1, PAGESIZE, Sort.Direction.DESC, "added"); //making request of given page,
 																								  //PAGESIZE(amount entity's on page),sorting results in desc order on date) 0 based
 		 	 	
 		return statusUpdateDao.findAll(request);  //Returns a Page of entities meeting the paging restriction provided in the Pageable object
+	}
+	//deleting status update
+	public void delete(Long id) {
+		statusUpdateDao.deleteById(id);
+		
+	}
+	//retrieving status update with specified id from DB
+	public StatusUpdate get(Long id) {
+		return statusUpdateDao.findById(id).get();
+		
 	}
 	
 }

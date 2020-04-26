@@ -25,6 +25,18 @@
 	color: yellow;
 	font-weight: bold;
 }
+.navbar-default .navbar-nav > .open > a{
+	background: none !important;    
+	color:yellow;
+}
+.navbar-default .navbar-nav > .open > a:focus{
+	color: white;
+
+}
+.edit-links{
+	margin-top: 10px;
+}
+
 .panel > .panel-heading {
 	background-color: blue;
 	color: white;
@@ -40,4 +52,11 @@ textarea {
 .pagination{
 	margin-top: 20px;
 	margin-bottom: 30px;
+}
+.homepage-status{
+	
+	margin-top: 40px;
+	font-size: larger;
+	font-family: serif;
+	font-style: italic;
 }

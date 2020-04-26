@@ -47,9 +47,15 @@
             <li><a href="${contextRoot}/about">About</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="${contextRoot}/addstatus">Add status</a></li>
-            
-          </ul>
+           
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">Status<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							 <li><a href="${contextRoot}/addstatus">Add Status</a></li>
+							 <li><a href="${contextRoot}/viewstatus">View Status Updates </a></li>
+						</ul></li>
+				</ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
