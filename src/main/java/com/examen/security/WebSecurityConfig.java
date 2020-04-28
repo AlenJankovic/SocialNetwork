@@ -6,11 +6,20 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.examen.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
@@ -18,15 +27,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 				.antMatchers("/",
-							 "/about")
+							 "/about",
+							 "/register")
 				.permitAll() 			// permiting any user to have access to homepage
 				.antMatchers(
 						"/js/*",
 						"/css/*",
 						"/img/*")
 				.permitAll()			// permiting any user to have access to js,css,img files		
-			.anyRequest()
-				.authenticated()
+			.antMatchers("/addstatus",
+						 "/viewstatus",
+						 "/editstatus",
+						 "/deletstatus")
+				.hasRole("ADMIN")
 				.and()
 			.formLogin()
 				.loginPage("/login")
@@ -52,4 +65,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	  //@formatter:on	
 	}
 
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
+	}
+
+	
 }
