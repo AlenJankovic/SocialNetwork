@@ -1,4 +1,4 @@
-package com.examen.security;
+package com.examen.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/",
 							 "/about",
-							 "/register")
+							 "/register",
+							 "/registrationconfirmed",
+							 "/invaliduser",
+							 "/expiredtoken",
+							 "/verifyemail",
+							 "/confirmregister")
 				.permitAll() 			// permiting any user to have access to homepage
 				.antMatchers(
 						"/js/*",
@@ -40,6 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						 "/editstatus",
 						 "/deletstatus")
 				.hasRole("ADMIN")
+				.anyRequest()
+				.denyAll()
 				.and()
 			.formLogin()
 				.loginPage("/login")

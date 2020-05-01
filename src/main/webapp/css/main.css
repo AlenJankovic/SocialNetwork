@@ -85,3 +85,14 @@ textarea {
 	font-weight:bold;
 	font-size: 15px;
 }
+.register-error{
+	margin-top:10px;
+	margin-bottom:10px;
+	color:red;
+	font-weight:bold;
+	font-size: 15px;
+}
+.message{
+	font-size: x-large;
+	margin-top: 100px;
+}

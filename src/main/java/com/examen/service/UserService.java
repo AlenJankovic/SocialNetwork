@@ -1,6 +1,7 @@
 package com.examen.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.examen.model.SiteUser;
+import com.examen.model.TokenType;
 import com.examen.model.UserDao;
+import com.examen.model.VerificationDao;
+import com.examen.model.VerificationToken;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -24,11 +28,17 @@ public class UserService implements UserDetailsService{
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	public void register(SiteUser user) {
+	@Autowired
+	private VerificationDao verificationDao;
+	
+	public void register(SiteUser user) {		//method to registrate user
 		
-		user.setRole("ROLE_USER");   //default roll
-		user.setPassword(passwordEncoder.encode(user.getPassword())); //encoding password before saving it
+		user.setRole("ROLE_USER");   			//default roll
 		userDao.save(user);
+	}
+	
+	public void save(SiteUser user) {
+		userDao.save(user);						//methode to update user
 	}
 
 	@Override
@@ -38,12 +48,32 @@ public class UserService implements UserDetailsService{
 		if(user == null) {
 			return null;
 		}
-		
+												
 		List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRole());
 		
+		Boolean enabled = user.getEnabled();
 		String password = user.getPassword();
-		return new User(email,password,auth);   //Spring object User
+		return new User(email,password,enabled,true,true,true,auth);   //Spring object User
 	}
 	
+	public String createEmailVerificationToken(SiteUser user) {			//Creating verification token
+		VerificationToken token = new VerificationToken(UUID.randomUUID().toString(),user, TokenType.REGISTRATION); //class UUID is generating
+																													//random token( 128bit string)
+		
+		verificationDao.save(token);			//saving token
+		
+		return token.getToken();				//returning String value of token
+	}
+	
+	public VerificationToken getVerificationToken(String token) {		//getting verification token /parameter token comes from link in the email
+		
+		return verificationDao.findByToken(token);
+		
+	}
+
+	public void deleteToken(VerificationToken token) {				//deleting token
+		verificationDao.delete(token);
+		
+	}
 
 }

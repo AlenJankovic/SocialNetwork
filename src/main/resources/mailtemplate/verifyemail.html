@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+
+<html>
+
+<th:block xmlns:th="http://wwww.thymeleaf.org">
+
+<p>Thank you för registering to the SocialNetwork</p>
+<!--/* thymeleaf syntax to write link code*/-->
+<p>Please click <a th:href="@{${url} + '/confirmregister?t=' + ${token}} " >here</a>to verify your email address</p>  
+</th:block>
+
+</html>

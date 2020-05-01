@@ -10,10 +10,10 @@
 <div class="row">
 
 	<div class="col-md-6 col-md-offset-3 col-sd-8 col-sd-offset-2">
-
-		<form:errors path="email"/>
-		<form:errors path="password"/>
 		
+		<div class="register-error">
+			<form:errors path="user.*"/>
+		</div>
 		
 		<div class="panel panel-default">
 			
@@ -30,12 +30,12 @@
 							class="form-control" />
 					</div>
 					<div class="input-group">
-						<form:input type="password" path="password" placeholder="Password"
+						<form:input type="password" path="plainPassword" placeholder="Password"
 							class="form-control" />
 					</div>
 					
 					<div class="input-group">
-						<input type="password" name="repeatpassword" placeholder="Repeat password"
+						<form:input type="password" path="repeatPassword" placeholder="Repeat password"
 							class="form-control" />
 					</div>
 					
