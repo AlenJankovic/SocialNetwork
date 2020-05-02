@@ -32,6 +32,8 @@ public class GlobalExceptionHandler {
 		return modelAndView ;
 		
 	}
+
+	//Duplicate User Exception
 	
 	@ExceptionHandler(value = DataIntegrityViolationException.class)            //handling duplicate user exceptions
 	public ModelAndView duplicatUserHandler(HttpServletRequest req, Exception e) {
