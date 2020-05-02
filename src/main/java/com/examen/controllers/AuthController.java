@@ -113,8 +113,6 @@ public class AuthController {
 		
 		ModelAndView register(ModelAndView modelAndView ) throws FileNotFoundException {
 			
-			if(true)
-			throw new FileNotFoundException();
 			
 			SiteUser user = new SiteUser();
 			
