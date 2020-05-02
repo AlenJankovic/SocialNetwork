@@ -50,18 +50,19 @@
 					<li><a href="${contextRoot}/about">About</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<sec:authorize access="!isAuthenticated()">
+					<sec:authorize access="!isAuthenticated()">					<%--showing upp for user which are not logged in --%>
 						<li><a href="${contextRoot}/login">Login</a></li>
 						<li><a href="${contextRoot}/register">Register</a></li>
 					</sec:authorize>
-					
-					<sec:authorize access="isAuthenticated()">
+
+					<sec:authorize access="isAuthenticated()">					<%--showing upp for user which are logged in --%>
 						<%--submiting logout form --%>
+						<li><a href="${contextRoot}/profile">Profile</a></li>
 						<li><a href="javascript:$('#logoutForm').submit()">Logout</a></li>
 						<%--submiting logout form --%>
 					</sec:authorize>
-					
-					<sec:authorize access="hasRole('ROLE_ADMIN')">
+
+					<sec:authorize access="hasRole('ROLE_ADMIN')">				<%--showing upp for user which are logged in as ADMIN--%>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" aria-haspopup="true"
 							aria-expanded="false">Status<span class="caret"></span></a>

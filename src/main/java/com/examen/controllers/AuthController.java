@@ -66,7 +66,7 @@ public class AuthController {
 		
 		Date expiryDate = token.getExpiry();       				//getting expiry date
 		
-		if(expiryDate.before(new Date())) {						// if token is before current date then token expired and redirecting to expired page
+		if(expiryDate.before(new Date())) {						// if token is before current date then token is expired and redirecting to expired page
 			modelAndView.setViewName("redirect:/expiredtoken");
 			userService.deleteToken(token);						//deleting token if expired
 			return modelAndView;
@@ -81,7 +81,7 @@ public class AuthController {
 		}
 		
 		userService.deleteToken(token);				
-		user.setEnabled(true);                     //if we pass all conditions set user to enabled
+		user.setEnabled(true);                     //if we pass all conditions ,set user to enabled
 		userService.save(user); 					//saving user
 		
 		

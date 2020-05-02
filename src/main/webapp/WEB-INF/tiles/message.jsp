@@ -7,7 +7,7 @@
 		class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 text-center">
 		<%--text-center placing text in center of div contener--%>
 		<div class="message">
-			<c:out value="${message }" />
+			<c:out value="${message}" />
 		</div>
 	</div>
 

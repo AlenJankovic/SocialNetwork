@@ -34,17 +34,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							 "/expiredtoken",
 							 "/verifyemail",
 							 "/confirmregister")
-				.permitAll() 			// permiting any user to have access to homepage
+				.permitAll() 			// Permitting any user to have access to homepage
 				.antMatchers(
 						"/js/*",
 						"/css/*",
 						"/img/*")
-				.permitAll()			// permiting any user to have access to js,css,img files		
+				.permitAll()			// Permitting any user to have access to js,css,img files		
 			.antMatchers("/addstatus",
 						 "/viewstatus",
 						 "/editstatus",
 						 "/deletstatus")
 				.hasRole("ADMIN")
+				.antMatchers("/profile"
+								)
+				.authenticated()
 				.anyRequest()
 				.denyAll()
 				.and()
