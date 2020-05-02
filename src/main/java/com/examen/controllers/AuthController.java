@@ -2,6 +2,7 @@ package com.examen.controllers;
 
 
 
+import java.io.FileNotFoundException;
 import java.util.Date;
 
 import javax.validation.Valid;
@@ -110,7 +111,10 @@ public class AuthController {
 	
 	@RequestMapping(value = "/register",method = RequestMethod.GET)
 		
-		ModelAndView register(ModelAndView modelAndView ) {
+		ModelAndView register(ModelAndView modelAndView ) throws FileNotFoundException {
+			
+			if(true)
+			throw new FileNotFoundException();
 			
 			SiteUser user = new SiteUser();
 			
