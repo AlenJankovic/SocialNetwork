@@ -24,7 +24,7 @@ public class StatusUpdateService {
 	}
 	//getting leatest status update
 	public StatusUpdate getLatest(){
-		return statusUpdateDao.findFirstByOrderByAddedDesc();	//getting latest status update
+		return statusUpdateDao.findFirstByOrderByAddedDesc();	//returning latest status update
 	}
 	
 	//Pagination-getting page

@@ -96,3 +96,25 @@ textarea {
 	font-size: x-large;
 	margin-top: 100px;
 }
+.profile-image{
+		float: left;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		border:1px solid ;
+}
+.profile-about{
+	width:100%;
+	border:1px solid gray;
+	padding:50px;
+	overflow: auto;
+	
+	
+}
+.profile-text{
+	font-size: larger;
+}
+.profile-about-edit{
+	position: absolute;
+	bottom: 0px;
+	right:50px;
+}
