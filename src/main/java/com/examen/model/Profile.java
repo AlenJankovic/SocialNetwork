@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.owasp.html.PolicyFactory;
 
 @Entity
 @Table(name="profile")
@@ -23,6 +26,7 @@ public class Profile {
 	private SiteUser user;
 	
 	@Column(name = "about", length = 4000)
+	@Size(max = 4000, message ="{editprofile.about.size}")
 	private String about;
 
 	
@@ -55,6 +59,20 @@ public class Profile {
 
 	public void setAbout(String about) {
 		this.about = about;
+	}
+	
+	public void safeCopyFrom(Profile other) {			//copying only about field or fields which are not confident(copyof profile object)
+			if(other.about != null) {
+				this.about = other.about;
+			}
+	}
+
+
+	public void safeMergeFrom(Profile webProfile, PolicyFactory htmlPolicy) {
+		if(webProfile.about != null) {
+			this.about = htmlPolicy.sanitize(webProfile.about);
+		}
+		
 	}
 
 	

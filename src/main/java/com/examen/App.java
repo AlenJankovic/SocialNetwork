@@ -1,5 +1,7 @@
 package com.examen;
 
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -69,6 +71,15 @@ public class App extends SpringBootServletInitializer{
 			
 			return factory;
 		}
+	}
+	
+	@Bean
+	PolicyFactory getUserHtmlPolicy() {						//allowing use of determined html elements
+		return new HtmlPolicyBuilder()						//sanitizing HTML
+				.allowCommonBlockElements()
+				.allowCommonInlineFormattingElements()
+				.toFactory();
+		
 	}
 	
 	
