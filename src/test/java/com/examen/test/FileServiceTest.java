@@ -2,6 +2,7 @@ package com.examen.test;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -10,6 +11,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -25,6 +27,9 @@ public class FileServiceTest {				//test for extensions method in fileService
 	
 	@Autowired
 	FileService fileService;
+	
+	@Value("${photo.upload.dir}")			//getting value/path from properties file
+	private String photoUploadDirectory;
 	
 	@Test
 	public void testGetExtention() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {			
@@ -50,6 +55,19 @@ public class FileServiceTest {				//test for extensions method in fileService
 		assertTrue("JPG should be valid",(Boolean)method.invoke(fileService, "JPG"));
 		assertTrue("jpeg should be valid",(Boolean)method.invoke(fileService, "jpeg"));
 		assertFalse("xyg should be invalidvalid",(Boolean)method.invoke(fileService, "xyg"));
+	}
+	
+
+	@Test
+	public void testCreateDirectory() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {			
+		Method method= FileService.class.getDeclaredMethod("makeSubDirectory", String.class, String.class);  //make possible to test private methods
+		method.setAccessible(true);
+		
+		for(int i = 0; i < 10000 ; i++) {								
+			File created = (File)method.invoke(fileService, photoUploadDirectory, "photo" );
+			
+			assertTrue("Directory should exist" + created.getAbsolutePath(),created.exists());  //created.exists is checking if directory already exists
+		}
 	}
 
 }
