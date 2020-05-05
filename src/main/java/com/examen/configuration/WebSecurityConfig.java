@@ -33,7 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							 "/invaliduser",
 							 "/expiredtoken",
 							 "/verifyemail",
-							 "/confirmregister")
+							 "/confirmregister"
+							 )
 				.permitAll() 			// Permitting any user to have access to homepage
 				.antMatchers(
 						"/js/*",
@@ -46,7 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						 "/deletstatus")
 				.hasRole("ADMIN")
 				.antMatchers("/profile",
-							 "/edit-profile-about"
+							 "/edit-profile-about",
+							 "/upload-profile-photo"
 								)
 				.authenticated()
 				.anyRequest()

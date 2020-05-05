@@ -1,6 +1,11 @@
 package com.examen.controllers;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.validation.Valid;
 
 import org.owasp.html.PolicyFactory;
@@ -12,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.examen.model.Profile;
@@ -19,17 +26,21 @@ import com.examen.model.SiteUser;
 import com.examen.service.ProfileService;
 import com.examen.service.UserService;
 
+
 @Controller
 public class ProfileController {
 	
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	
 	@Autowired
-	ProfileService profileService;
+	private ProfileService profileService;
 	
 	@Autowired
-	PolicyFactory htmlPolicy;
+	private PolicyFactory htmlPolicy;
+	
+	@Value("${photo.upload.dir}")			//getting value/path from properties file
+	private String photoUploadDirectory;
 	
 	
 	private SiteUser getUser() {
@@ -100,11 +111,28 @@ public class ProfileController {
 			modelAndView.setViewName("redirect:/profile");		//redirecting to profile page
 		}
 		
-		
-		
 		return modelAndView;
 		
 	}
+	
+	@RequestMapping(value="/upload-profile-photo", method=RequestMethod.POST)					//uploading photo file to Photo directory 
+	public ModelAndView handlePhotoUploads(ModelAndView modelAndView, @RequestParam("file") MultipartFile file) {	//MultipartFile is spring class	
+		
+		modelAndView.setViewName("redirect:/profile");
+		
+		Path outputFilePath = Paths.get(photoUploadDirectory,file.getOriginalFilename());   //getting original file name and create path to file
+		
+		try {
+			Files.deleteIfExists(outputFilePath);
+			Files.copy(file.getInputStream(),outputFilePath);    //copying file to upload directory
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return modelAndView;
+		
+	}
+	
 	
 
 }

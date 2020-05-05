@@ -1,11 +1,16 @@
 package com.examen.controllers;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
@@ -17,10 +22,19 @@ public class GlobalExceptionHandler {
 	@Value("${message.error.duplicate.user}")
 	private String duplicatUserMessage;
 	
+	@ExceptionHandler(MultipartException.class)
+	@ResponseBody
+	String fileUploadHandler(Exception e) {
+		
+		e.printStackTrace();
+		
+		return "Error occured uploading file";
+	}
 	
 	
 	@ExceptionHandler(value = Exception.class)            //handling all type of exceptions
 	public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) {
+		
 		ModelAndView modelAndView = new ModelAndView();
 		
 		modelAndView.getModel().put("message", exceptionMessage);
