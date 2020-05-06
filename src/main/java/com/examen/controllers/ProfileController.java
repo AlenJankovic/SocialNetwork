@@ -137,12 +137,19 @@ public class ProfileController {
 		SiteUser user = getUser();								//getting  current auth. user
 		Profile profile = profileService.getUserProfile(user);	//getting  current users profile
 		
+		Path oldPhotoPath = profile.getPhoto(photoUploadDirectory);   //getting path to existing profile pic 
+		
+		
 		try {
 			FileInfo photoInfo = fileService.saveImageFile(file, photoUploadDirectory, "photos", "profile");			//saving image to photo directory
 																														//and returning photo info
 			profile.setPhotoDetail(photoInfo);					//adding photo details to profile
 			
 			profileService.save(profile);						//saving profile and adding photo details information
+			
+			if(oldPhotoPath != null) {
+				Files.delete(oldPhotoPath);  					//deleting old photo
+			}
 		
 		} catch (InvalidFileException | IOException e) {
 			
@@ -154,7 +161,7 @@ public class ProfileController {
 	}
 	
 	@RequestMapping(value="/profilephoto", method=RequestMethod.GET)		//serving photo
-	@ResponseBody												//Annotating that data method return shold display directly(not mapped to tiles) 
+	@ResponseBody															//Annotating that data method return should display directly(not mapped to tiles) 
 	ResponseEntity<InputStreamResource> servPhoto() throws IOException{ 			// setting content to send to the browser
 		
 		SiteUser user = getUser();								//getting  current auth. user
