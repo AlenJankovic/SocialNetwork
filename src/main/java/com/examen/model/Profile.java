@@ -28,7 +28,15 @@ public class Profile {
 	@Column(name = "about", length = 4000)
 	@Size(max = 4000, message ="{editprofile.about.size}")
 	private String about;
-
+	
+	@Column(name= "photo_directory" ,length = 10)
+	private String photoDirectory;
+	
+	@Column(name= "photo_name", length = 10)
+	private String photoName;
+	
+	@Column(name= "photo_extention", length = 5)
+	private String photoExtention;
 	
 	public SiteUser getUser() {
 		return user;
@@ -75,5 +83,47 @@ public class Profile {
 		
 	}
 
+
+	
+	public String getPhotoDirectory() {
+		return photoDirectory;
+	}
+
+
+	
+	public String getPhotoName() {
+		return photoName;
+	}
+
+
+	
+	public String getPhotoExtention() {
+		return photoExtention;
+	}
+
+
+	
+	public void setPhotoDirectory(String photoDirectory) {
+		this.photoDirectory = photoDirectory;
+	}
+
+
+	
+	public void setPhotoName(String photoName) {
+		this.photoName = photoName;
+	}
+
+
+	
+	public void setPhotoExtention(String photoExtention) {
+		this.photoExtention = photoExtention;
+	}
+	
+	public void setPhotoDetail(FileInfo info) {
+		photoDirectory = info.getSubDirectory();
+		photoExtention = info.getExtention();
+		photoName = info.getBasename();
+		
+	}
 	
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.examen.exceptions.InvalidFileException;
+import com.examen.model.FileInfo;
 
 @Service
 public class FileService {
@@ -61,7 +62,7 @@ public class FileService {
 		return directory;
 	}
 	
-	public void saveImageFile(MultipartFile file,String baseDirectory,String subDirPrefix, String filePrefix) throws InvalidFileException, IOException {
+	public FileInfo saveImageFile(MultipartFile file,String baseDirectory,String subDirPrefix, String filePrefix) throws InvalidFileException, IOException {
 		
 		int nFileName = random.nextInt(1000);
 		
@@ -84,6 +85,9 @@ public class FileService {
 				Files.deleteIfExists(filepath);												//deleting if file already exist
 				
 				Files.copy(file.getInputStream(), filepath);								//copying and saving file
+				
+				
+				return new FileInfo(filename,fileExtention, subDirectory.getName(), baseDirectory);    //returning file info
 	}
 
 }

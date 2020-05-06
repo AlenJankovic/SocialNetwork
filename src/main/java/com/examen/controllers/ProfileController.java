@@ -21,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.examen.exceptions.InvalidFileException;
+import com.examen.model.FileInfo;
 import com.examen.model.Profile;
 import com.examen.model.SiteUser;
+import com.examen.service.FileService;
 import com.examen.service.ProfileService;
 import com.examen.service.UserService;
 
@@ -38,6 +41,9 @@ public class ProfileController {
 	
 	@Autowired
 	private PolicyFactory htmlPolicy;
+	
+	@Autowired
+	private FileService fileService;
 	
 	@Value("${photo.upload.dir}")			//getting value/path from properties file
 	private String photoUploadDirectory;
@@ -120,15 +126,21 @@ public class ProfileController {
 		
 		modelAndView.setViewName("redirect:/profile");
 		
-		Path outputFilePath = Paths.get(photoUploadDirectory,file.getOriginalFilename());   //getting original file name and create path to file
+		SiteUser user = getUser();								//getting  current auth. user
+		Profile profile = profileService.getUserProfile(user);	//getting  current users profile
 		
 		try {
-			Files.deleteIfExists(outputFilePath);
-			Files.copy(file.getInputStream(),outputFilePath);    //copying file to upload directory
+			FileInfo photoInfo = fileService.saveImageFile(file, photoUploadDirectory, "photos", "profile");			//saving image to photo directory
+																														//and returning photo info
+			profile.setPhotoDetail(photoInfo);					//adding photo details to profile
 			
-		} catch (IOException e) {
+			profileService.save(profile);						//saving profile and adding photo details information
+		
+		} catch (InvalidFileException | IOException e) {
+			
 			e.printStackTrace();
 		}
+		
 		return modelAndView;
 		
 	}
