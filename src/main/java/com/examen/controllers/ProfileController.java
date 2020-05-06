@@ -1,16 +1,21 @@
-package com.examen.controllers;
+	package com.examen.controllers;
 
 
 import java.io.IOException;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import javax.validation.Valid;
 
 import org.owasp.html.PolicyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,6 +34,8 @@ import com.examen.model.SiteUser;
 import com.examen.service.FileService;
 import com.examen.service.ProfileService;
 import com.examen.service.UserService;
+
+import ch.qos.logback.core.util.FileSize;
 
 
 @Controller
@@ -144,6 +152,27 @@ public class ProfileController {
 		return modelAndView;
 		
 	}
+	
+	@RequestMapping(value="/profilephoto", method=RequestMethod.GET)		//serving photo
+	@ResponseBody												//Annotating that data method return shold display directly(not mapped to tiles) 
+	ResponseEntity<InputStreamResource> servPhoto() throws IOException{ 			// setting content to send to the browser
+		
+		SiteUser user = getUser();								//getting  current auth. user
+		Profile profile = profileService.getUserProfile(user);	//getting  current users profile
+		
+		Path photoPath = Paths.get(photoUploadDirectory, "default", "avatar.png");		//creating path to default picture (avatar)
+		
+		if(profile != null && profile.getPhoto(photoUploadDirectory) != null) {			//if profile exist and profile photo is uploaded overriding photoPath and
+			photoPath = profile.getPhoto(photoUploadDirectory);							//setting photoPath to uploaded profile picture
+		}
+		
+		return ResponseEntity															//sending information to the browser
+				.ok()
+				.contentLength(Files.size(photoPath))
+				.contentType(MediaType.parseMediaType(URLConnection.guessContentTypeFromName(photoPath.toString())))   //guessing mediatype content with help of file name
+				.body(new InputStreamResource(Files.newInputStream(photoPath, StandardOpenOption.READ)));              //reading bits from photo file and returning that
+	}
+	
 	
 	
 

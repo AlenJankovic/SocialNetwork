@@ -1,5 +1,8 @@
 package com.examen.model;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -123,6 +126,16 @@ public class Profile {
 		photoDirectory = info.getSubDirectory();
 		photoExtention = info.getExtention();
 		photoName = info.getBasename();
+		
+	}
+	
+	public Path getPhoto(String baseDirectory) {
+		
+		if(photoName == null) {																		//if there is no photo ,returning null, can use it to set default photo
+			return null;
+		}
+		
+		return Paths.get(baseDirectory, photoDirectory, photoName + "." + photoExtention);			//returning full path to photo
 		
 	}
 	
