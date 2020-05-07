@@ -35,6 +35,7 @@ import com.examen.model.SiteUser;
 import com.examen.service.FileService;
 import com.examen.service.ProfileService;
 import com.examen.service.UserService;
+import com.examen.status.PhotoUploadStatus;
 
 import ch.qos.logback.core.util.FileSize;
 
@@ -57,6 +58,19 @@ public class ProfileController {
 	@Value("${photo.upload.dir}")			//getting value/path from properties file
 	private String photoUploadDirectory;
 	
+	@Value("${photo.upload.ok}")			
+	private String photoStatusOk;
+	
+	@Value("${photo.upload.invalid}")			
+	private String photoStatusInvalid;
+	
+	@Value("${photo.upload.ioexception}")			
+	private String photoStatusIOExeption;
+	
+	@Value("${photo.upload.toosmall}")			
+	private String photoStatusTooSmall;
+	
+	
 	
 	private SiteUser getUser() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication(); // getting currently authenticated
@@ -67,23 +81,23 @@ public class ProfileController {
 
 	}
 	
-	@RequestMapping(value="/profile")							//showing own profile
+	@RequestMapping(value="/profile")							     //showing own profile
 	public ModelAndView showeProfile(ModelAndView modelAndView) {
 		
-		SiteUser user = getUser();								//getting  current auth. user
+		SiteUser user = getUser();									//getting  current auth. user
 		
-		Profile profile = profileService.getUserProfile(user);   //getting  current users profile
+		Profile profile = profileService.getUserProfile(user);   	//getting  current users profile
 		
-		if(profile == null) {									//if the user does not have a profile, create new profile
+		if(profile == null) {										//if the user does not have a profile, create new profile
 				profile = new Profile();
-				profile.setUser(user);                  //binding user with created profile
-				profileService.save(profile);			//saving new profile
+				profile.setUser(user);                  			//binding user with created profile
+				profileService.save(profile);						//saving new profile
 		}
 		
 		Profile webProfile = new Profile();
-		webProfile.safeCopyFrom(profile);				//exposing only information from about field 
+		webProfile.safeCopyFrom(profile);							//exposing only information from about field 
 		
-		modelAndView.getModel().put("profile", webProfile);		//exposing only information from about field to the web
+		modelAndView.getModel().put("profile", webProfile);			//exposing only information from about field to the web
 		
 		
 		modelAndView.setViewName("app.profile");
@@ -100,7 +114,7 @@ public class ProfileController {
 		Profile profile = profileService.getUserProfile(user);	//getting  current users profile
 		
 		Profile webProfile = new Profile();
-		webProfile.safeCopyFrom(profile);				//exposing only information from 'about' field 
+		webProfile.safeCopyFrom(profile);						//exposing only information from 'about' field 
 		
 		
 		modelAndView.getModel().put("profile", webProfile);
@@ -130,16 +144,16 @@ public class ProfileController {
 		
 	}
 	
-	@RequestMapping(value="/upload-profile-photo", method=RequestMethod.POST)					//uploading photo file to Photo directory 
-	public ModelAndView handlePhotoUploads(ModelAndView modelAndView, @RequestParam("file") MultipartFile file) {	//MultipartFile is spring class	
-		
-		modelAndView.setViewName("redirect:/profile");
+	@RequestMapping(value="/upload-profile-photo", method=RequestMethod.POST)					//uploading photo file to Photo directory and showing status messages
+	@ResponseBody					//Annotation that indicates a method return value should be bound to the webresponse body.Returning data from method(JSON format)							
+	public PhotoUploadStatus handlePhotoUploads(@RequestParam("file") MultipartFile file) {	//MultipartFile is spring class	
 		
 		SiteUser user = getUser();								//getting  current auth. user
 		Profile profile = profileService.getUserProfile(user);	//getting  current users profile
 		
 		Path oldPhotoPath = profile.getPhoto(photoUploadDirectory);   //getting path to existing profile pic 
 		
+		PhotoUploadStatus status = new PhotoUploadStatus(photoStatusOk);	//Creating PhotoUploadStatus instance to manage error messages 
 		
 		try {
 			FileInfo photoInfo = fileService.saveImageFile(file, photoUploadDirectory, "photos", "p" + user.getId(),100,100);		//saving image with unique name (using userID) to photo directory
@@ -152,15 +166,20 @@ public class ProfileController {
 				Files.delete(oldPhotoPath);  					//deleting old photo
 			}
 		
-		} catch (InvalidFileException | IOException e) {
-			
-			e.printStackTrace();
+		} catch (InvalidFileException e) {
+			status.setMessage(photoStatusInvalid);
+				e.printStackTrace();
+		
 		} catch (ImageTooSmallException e) {
-			
-			e.printStackTrace();
+			status.setMessage(photoStatusTooSmall);
+				e.printStackTrace();
+		
+		}catch(IOException e) {
+			status.setMessage(photoStatusIOExeption);
+				e.printStackTrace();
 		}
 		
-		return modelAndView;
+		return status;
 		
 	}
 	

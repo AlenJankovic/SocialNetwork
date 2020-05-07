@@ -15,7 +15,12 @@
 
 
 			<div class="profile-image">
-				<img src="${profilePhoto}">
+				<div>
+					<img src="${profilePhoto}">
+				</div>
+				<div class="text-center">
+					<a href="#" id="uploadLink">UploadPhoto</a>
+				</div>
 			</div>
 
 			<div class="profile-text">
@@ -44,8 +49,8 @@
 		
 		<form method="post" enctype="multipart/form-data" action="${uploadPhotoLink}">
 				
-				Select photo: <input type="file" accept="image/*" name="file"/>
-				<input type="submit" value="upload"/>
+				Select photo: <input type="file" accept="image/*" name="file"/ id="photoFileInput">
+							  <input type="submit" value="upload"/>
 				
 				<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token }" />
@@ -55,3 +60,14 @@
 
 </div>
 
+<script>
+
+$(document).ready(function(){
+	console.log("Hello, this is javaScript")
+	
+	$("#uploadLink").click(function(event){
+		event.preventDefault()						<%-- preventing default action of a-link--%>
+		$("#photoFileInput").trigger("click");		<%-- trigged on click--%>
+	})
+});
+</script>
