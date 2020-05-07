@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.examen.exceptions.ImageTooSmallException;
 import com.examen.exceptions.InvalidFileException;
 import com.examen.model.FileInfo;
 import com.examen.model.Profile;
@@ -141,8 +142,8 @@ public class ProfileController {
 		
 		
 		try {
-			FileInfo photoInfo = fileService.saveImageFile(file, photoUploadDirectory, "photos", "profile");			//saving image to photo directory
-																														//and returning photo info
+			FileInfo photoInfo = fileService.saveImageFile(file, photoUploadDirectory, "photos", "p" + user.getId(),100,100);		//saving image with unique name (using userID) to photo directory
+																																	//and returning photo info
 			profile.setPhotoDetail(photoInfo);					//adding photo details to profile
 			
 			profileService.save(profile);						//saving profile and adding photo details information
@@ -152,6 +153,9 @@ public class ProfileController {
 			}
 		
 		} catch (InvalidFileException | IOException e) {
+			
+			e.printStackTrace();
+		} catch (ImageTooSmallException e) {
 			
 			e.printStackTrace();
 		}
