@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 
 @EnableAsync
 @SpringBootApplication
+@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)		//restricting which roles are able to execute a particular method
 public class App extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {

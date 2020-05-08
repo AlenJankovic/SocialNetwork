@@ -10,13 +10,15 @@
 <div class="row">
 
 	<div class="col-md-10 col-md-offset-1">
+	
+	<div id="profile-photo-status"></div>
 
 		<div class="profile-about">
 
 
 			<div class="profile-image">
 				<div>
-					<img src="${profilePhoto}">
+					<img src="${profilePhoto}" id="profilePhotoImage"/	>
 				</div>
 				<div class="text-center">
 					<a href="#" id="uploadLink">UploadPhoto</a>
@@ -44,16 +46,16 @@
 			<a href="${editProfileAbout}">edit</a>
 		</div>
 		
-		<p>&nbsp;</p>
+		
 		<c:url var="uploadPhotoLink" value="/upload-profile-photo"/>
 		
-		<form method="post" enctype="multipart/form-data" action="${uploadPhotoLink}">
+		<form method="post" enctype="multipart/form-data" action="${uploadPhotoLink}" id="photoUploadForm">
 				
-				Select photo: <input type="file" accept="image/*" name="file"/ id="photoFileInput">
-							  <input type="submit" value="upload"/>
+					<input type="file" accept="image/*" name="file"/ id="photoFileInput">
+					<input type="submit" value="upload"/>
 				
-				<input type="hidden" name="${_csrf.parameterName}"
-						value="${_csrf.token }" />
+					<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token }" />
 		</form>
 
 	</div>
@@ -62,12 +64,52 @@
 
 <script>
 
+function setUploadStatusText(text){								//manage showing and dissapearing of message on success									
+	$("#profile-photo-status").text(text);
+	
+	window.setTimeout(function(){								//making text disappear after 2 sec. 
+		$("#profile-photo-status").text("");
+	},2000);
+}
+
+function uploadSuccess(data){
+	$("#profilePhotoImage").attr("src","${profilePhoto}?time="+new Date());		//adding new date to differentiet
+																				//url due to browser browser caching issues	
+	$("#photoFileInput").val("");												//blank file name if upload is successed
+	
+	setUploadStatusText(data.message);											//show message Photo Uploaded from properties file 
+}
+	
+function uploadPhoto(event){
+	
+	$.ajax({
+		url: $(this).attr("action"),			<%--url to send data to --%>
+		type:'POST',							<%--POST to server--%>
+		data: new FormData(this),				<%--sending formData--%>
+		processData:false,						
+		contentType:false,
+		success:uploadSuccess,					<%--invoks if upload is successfull--%>
+		error: function(){						<%--if http respons with error cods--%> 
+			setUploadStatusText("Server error")	<%--showing error message--%>
+		}
+	})
+	
+	 event.preventDefault();
+	
+}
+
 $(document).ready(function(){
-	console.log("Hello, this is javaScript")
+	
+	//setUploadStatusText("Hello");
+	
 	
 	$("#uploadLink").click(function(event){
-		event.preventDefault()						<%-- preventing default action of a-link--%>
-		$("#photoFileInput").trigger("click");		<%-- trigged on click--%>
-	})
+		event.preventDefault()							<%-- preventing default action of a-link--%>
+		$("#photoFileInput").trigger("click");			<%-- trigged on click open file browser--%>
+	});
+	$("#photoFileInput").change(function(){				<%-- binding click event to form and submit--%>
+		$("#photoUploadForm").submit();
+	});
+	$("#photoUploadForm").on("submit", uploadPhoto )	<%--handler intercept form on submit--%>
 });
 </script>

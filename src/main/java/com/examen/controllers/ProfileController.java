@@ -14,6 +14,7 @@ import org.owasp.html.PolicyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -146,7 +147,7 @@ public class ProfileController {
 	
 	@RequestMapping(value="/upload-profile-photo", method=RequestMethod.POST)					//uploading photo file to Photo directory and showing status messages
 	@ResponseBody					//Annotation that indicates a method return value should be bound to the webresponse body.Returning data from method(JSON format)							
-	public PhotoUploadStatus handlePhotoUploads(@RequestParam("file") MultipartFile file) {	//MultipartFile is spring class	
+	public ResponseEntity<PhotoUploadStatus> handlePhotoUploads(@RequestParam("file") MultipartFile file) {	//MultipartFile is spring class	- ResponseEntity adds a HttpStatus status code
 		
 		SiteUser user = getUser();								//getting  current auth. user
 		Profile profile = profileService.getUserProfile(user);	//getting  current users profile
@@ -179,7 +180,7 @@ public class ProfileController {
 				e.printStackTrace();
 		}
 		
-		return status;
+		return new ResponseEntity(status,HttpStatus.OK );
 		
 	}
 	

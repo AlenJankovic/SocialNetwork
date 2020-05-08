@@ -119,3 +119,13 @@ textarea {
 	bottom: 0px;
 	right:50px;
 }
+#profile-photo-status{
+	position: absolute;
+	top: 10px;
+	left:65px;
+	font-weight: bold;
+	color:maroon;
+}
+#photoUploadForm{				
+	display: none;
+}

@@ -1,6 +1,7 @@
 package com.examen.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.examen.model.Profile;
@@ -15,12 +16,14 @@ public class ProfileService {
 	
 	@Autowired
 	ProfileDao profileDao;
-													//saving users profile
-	public void save(Profile profile) {
+	
+	@PreAuthorize("isAuthenticated()")												//saving users profile only to authenticated users
+	public void save(Profile profile) {												//method is unreachable to unauthenticated users
 		profileDao.save(profile);
 	}
-													//returning users profile
-	public Profile getUserProfile(SiteUser user) {
+	
+	@PreAuthorize("isAuthenticated()")												//returning users profile
+	public Profile getUserProfile(SiteUser user) {									//method is unreachable to unauthenticated users
 		return profileDao.findByUser(user);
 		
 	}
