@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,10 +83,14 @@ public class ProfileController {
 
 	}
 	
-	@RequestMapping(value="/profile")							     //showing own profile
-	public ModelAndView showeProfile(ModelAndView modelAndView) {
+	private ModelAndView showProfile(SiteUser user) {
 		
-		SiteUser user = getUser();									//getting  current auth. user
+		ModelAndView modelAndView = new ModelAndView();
+		
+		if(user == null) {											//checking if user not exist redirecting to home
+			modelAndView.setViewName("redirect:/");
+			return modelAndView;
+		}
 		
 		Profile profile = profileService.getUserProfile(user);   	//getting  current users profile
 		
@@ -98,6 +103,7 @@ public class ProfileController {
 		Profile webProfile = new Profile();
 		webProfile.safeCopyFrom(profile);							//exposing only information from about field 
 		
+		modelAndView.getModel().put("userId", user.getId());		
 		modelAndView.getModel().put("profile", webProfile);			//exposing only information from about field to the web
 		
 		
@@ -106,7 +112,28 @@ public class ProfileController {
 		return modelAndView;
 		
 	}
+		
+	@RequestMapping(value="/profile")							     //showing own profile
+	public ModelAndView showProfile() {
+		
+		SiteUser user = getUser();									//getting  current auth. user
+		
+		ModelAndView modelAndView = showProfile(user);
+		
+		return modelAndView;
+		
+	}
 	
+	@RequestMapping(value="/profile/{id}")							//getting user profile with specified id						     
+	public ModelAndView showProfile(@PathVariable("id") Long id) {
+		
+		SiteUser user = userService.get(id);									
+		
+		ModelAndView modelAndView = showProfile(user);
+		
+		return modelAndView;
+		
+	}
 	@RequestMapping(value="/edit-profile-about", method = RequestMethod.GET)
 	public ModelAndView editAbout(ModelAndView modelAndView) {
 		
@@ -146,7 +173,7 @@ public class ProfileController {
 	}
 	
 	@RequestMapping(value="/upload-profile-photo", method=RequestMethod.POST)					//uploading photo file to Photo directory and showing status messages
-	@ResponseBody					//Annotation that indicates a method return value should be bound to the webresponse body.Returning data from method(JSON format)							
+	@ResponseBody																				//Annotation that indicates a method return value should be bound to the webresponse body.Returning data from method(JSON format)							
 	public ResponseEntity<PhotoUploadStatus> handlePhotoUploads(@RequestParam("file") MultipartFile file) {	//MultipartFile is spring class	- ResponseEntity adds a HttpStatus status code
 		
 		SiteUser user = getUser();								//getting  current auth. user
@@ -184,12 +211,12 @@ public class ProfileController {
 		
 	}
 	
-	@RequestMapping(value="/profilephoto", method=RequestMethod.GET)		//serving photo
-	@ResponseBody															//Annotating that data method return should display directly(not mapped to tiles) 
-	ResponseEntity<InputStreamResource> servPhoto() throws IOException{ 			// setting content to send to the browser
+	@RequestMapping(value="/profilephoto/{id}", method=RequestMethod.GET)						//serving photo
+	@ResponseBody																				//Annotating that data method return should display directly(not mapped to tiles) 
+	ResponseEntity<InputStreamResource> servPhoto(@PathVariable Long id) throws IOException{ 	// setting content to send to the browser
 		
-		SiteUser user = getUser();								//getting  current auth. user
-		Profile profile = profileService.getUserProfile(user);	//getting  current users profile
+		SiteUser user = userService.get(id);							//getting  current auth. user
+		Profile profile = profileService.getUserProfile(user);			//getting  current users profile
 		
 		Path photoPath = Paths.get(photoUploadDirectory, "default", "avatar.png");		//creating path to default picture (avatar)
 		

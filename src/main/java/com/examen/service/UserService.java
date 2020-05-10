@@ -81,6 +81,10 @@ public class UserService implements UserDetailsService{
 		
 	}
 
+	public SiteUser get(Long id) {
+		return userDao.findById(id).get();
+	}
+
 	
 
 }

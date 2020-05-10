@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -25,20 +24,9 @@ public class PageController {
 	@Autowired
 	private StatusUpdateService statusUpdateService;
 	
-	@Value("${message.error.forbidden}")
-	private String accessDeniedMessage;
-	
 	@RequestMapping("/")
-	ModelAndView home(ModelAndView modelAndView) {
-		
-		modelAndView.setViewName("app.homepage");
-		
-		StatusUpdate statusUpdate = statusUpdateService.getLatest();
-		
-		modelAndView.getModel().put("statusUpdate", statusUpdate);
-		
-		
-		return modelAndView;
+	String home() {
+		return "app.homepage";
 		
 	}
 	
@@ -47,15 +35,6 @@ public class PageController {
 		return "app.about";
 	}
 	
-	@RequestMapping("/403")
-		ModelAndView accessDenied(ModelAndView modelAndView) {			//RequestMapping for message when token is expired
-		
-		modelAndView.getModel().put("message" , accessDeniedMessage);
-		modelAndView.setViewName("app.message");
-		
-		return modelAndView;
-	}
 	
-		
 
 }

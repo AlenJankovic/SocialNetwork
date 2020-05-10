@@ -2,6 +2,7 @@ package com.examen.model;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -40,6 +44,13 @@ public class Profile {
 	
 	@Column(name= "photo_extention", length = 5)
 	private String photoExtention;
+	
+	@ManyToMany
+	@JoinTable(name="profile_interests",
+	joinColumns= {@JoinColumn(name="profile_id")},	
+	inverseJoinColumns ={@JoinColumn(name="interest_id")})
+	@OrderColumn(name="display_order")							//Specifies a column that is used to maintain the persistent order of a list		
+	private Set<Interest> interests;
 	
 	public SiteUser getUser() {
 		return user;
@@ -138,5 +149,18 @@ public class Profile {
 		return Paths.get(baseDirectory, photoDirectory, photoName + "." + photoExtention);			//returning full path to photo
 		
 	}
+
+
+
+	public Set<Interest> getInterests() {
+		return interests;
+	}
+
+
+	
+	public void setInterests(Set<Interest> interests) {
+		this.interests = interests;
+	}
+	
 	
 }

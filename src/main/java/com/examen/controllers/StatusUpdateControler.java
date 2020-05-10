@@ -56,7 +56,7 @@ public class StatusUpdateControler {
 	}
 
 	@RequestMapping(value = "/viewstatus", method = RequestMethod.GET)
-	ModelAndView viewStatus(ModelAndView modelAndView, @RequestParam(name = "p", defaultValue = "1") int pageNumber) {
+	ModelAndView viewStatus(ModelAndView modelAndView, @RequestParam(name ="p", defaultValue = "1") int pageNumber) {
 
 		Page<StatusUpdate> page = statusUpdateService.getPage(pageNumber);
 
@@ -80,7 +80,7 @@ public class StatusUpdateControler {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/addstatus", method = RequestMethod.POST)
+	@RequestMapping(value ="/addstatus", method = RequestMethod.POST)
 
 	ModelAndView addStatus(ModelAndView modelAndView, @Valid StatusUpdate statusUpdate, BindingResult result) {
 
