@@ -4,24 +4,37 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<c:url var="profilePhoto" value="/profilephoto/${userId}"/>				<%--getting photo via RequestMapping /profilephoto --%>
+<c:url var="profilePhoto" value="/profilephoto/${userId}" />
+<%--getting photo via RequestMapping /profilephoto --%>
 <c:url var="editProfileAbout" value="/edit-profile-about" />
 
-<c:url var="saveInterest" value="/save-interest"/>
-<c:url var="deleteInterest" value="/delete-interest"/>
+<c:url var="saveInterest" value="/save-interest" />
+<c:url var="deleteInterest" value="/delete-interest" />
 
 <div class="row">
 
 	<div class="col-md-10 col-md-offset-1">
-	
-	<div id="profile-photo-status"></div>
-	
-	<div id="interestDiv">
-		<ul id="interestList">
-			<li>Add your interests(ex.film)!</li>
-		</ul>
-	
-	</div>
+
+		<div id="profile-photo-status"></div>
+
+		<div id="interestDiv">
+			<ul id="interestList">
+				<c:choose>
+					<c:when test="${empty profile.interests}">					<%--Output only  if list is empty --%>
+						<li>Add your interests(ex.film)!</li>
+					</c:when>
+					<c:otherwise>
+						<c:forEach var="interest"  items="${profile.interests}">
+						
+							<li>${interest}</li>
+						
+						</c:forEach>
+					
+					</c:otherwise>
+				</c:choose>
+			</ul>
+
+		</div>
 
 		<div class="profile-about">
 
@@ -55,17 +68,16 @@
 		<div class="profile-about-edit">
 			<a href="${editProfileAbout}">edit</a>
 		</div>
-		
-		
-		<c:url var="uploadPhotoLink" value="/upload-profile-photo"/>
-		
-		<form method="post" enctype="multipart/form-data" action="${uploadPhotoLink}" id="photoUploadForm">
-				
-					<input type="file" accept="image/*" name="file"/ id="photoFileInput">
-					<input type="submit" value="upload"/>
-				
-					<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token }" />
+
+
+		<c:url var="uploadPhotoLink" value="/upload-profile-photo" />
+
+		<form method="post" enctype="multipart/form-data"
+			action="${uploadPhotoLink}" id="photoUploadForm">
+
+			<input type="file" accept="image/*" name="file" / id="photoFileInput">
+			<input type="submit" value="upload" /> <input type="hidden"
+				name="${_csrf.parameterName}" value="${_csrf.token }" />
 		</form>
 
 	</div>
@@ -117,7 +129,31 @@ function deleteInterest(text){
 }
 
 function editInterests(text, actionUrl){
-	alert(text + " : " + actionUrl)
+	 var token = $("meta[name='_csrf']").attr("content");		<%--getting _csrf token from meta tags i default page--%>
+	 var header = $("meta[name='_csrf_header']").attr("content");
+	 
+	$.ajaxPrefilter(function(options, originalOptions, jqXHR){	<%--The jqXHR (jQuery XMLHttpRequest) replaces the browser native XMLHttpRequest object--%>
+		jqXHR.setRequestHeader(header,token);
+	});
+	
+	$.ajax({
+		
+		'url': actionUrl,
+		
+		data:{
+			'name':text
+		},
+		
+		type: 'POST',
+		
+		success: function(){
+			// test alert("Ok");
+		},
+		
+		error: function(){
+			//test alert("error");
+		}
+	});
 }
 
 $(document).ready(function(){
