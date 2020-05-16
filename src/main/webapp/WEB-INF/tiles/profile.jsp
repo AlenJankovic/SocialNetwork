@@ -7,11 +7,21 @@
 <c:url var="profilePhoto" value="/profilephoto/${userId}"/>				<%--getting photo via RequestMapping /profilephoto --%>
 <c:url var="editProfileAbout" value="/edit-profile-about" />
 
+<c:url var="saveInterest" value="/save-interest"/>
+<c:url var="deleteInterest" value="/delete-interest"/>
+
 <div class="row">
 
 	<div class="col-md-10 col-md-offset-1">
 	
 	<div id="profile-photo-status"></div>
+	
+	<div id="interestDiv">
+		<ul id="interestList">
+			<li>Add your interests(ex.film)!</li>
+		</ul>
+	
+	</div>
 
 		<div class="profile-about">
 
@@ -98,9 +108,37 @@ function uploadPhoto(event){
 	
 }
 
+function saveInterest(text){
+	editInterests(text, "${saveInterest}")
+}
+
+function deleteInterest(text){
+	editInterests(text, "${deleteInterest}")
+}
+
+function editInterests(text, actionUrl){
+	alert(text + " : " + actionUrl)
+}
+
 $(document).ready(function(){
 	
-	//setUploadStatusText("Hello");
+	$("#interestList").tagit({								<%--tagit configuration--%>
+		
+		afterTagRemoved: function(event, ui ){
+			deleteInterest(ui.tagLabel);					
+		},
+		
+		afterTagAdded: function(event, ui ){
+			if(ui.duringInitialization != true){				<%--if tag is not added during initialization, add it--%>
+				saveInterest(ui.tagLabel);
+			}
+			
+		},
+		
+		caseSensitive: false,				   <%--Music and music is same--%>
+		allowSpaces:true,					   <%--allowing spaces in interest name--%>
+		tagLimit:10						       <%--limit of amount interest is 10--%>
+	});								
 	
 	
 	$("#uploadLink").click(function(event){

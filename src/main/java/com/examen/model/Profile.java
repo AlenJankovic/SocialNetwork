@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class Profile {
 	private Long id;
 	
 	@OneToOne(targetEntity = SiteUser.class)			//@OneToOne -each user has profile
-	@JoinColumn(name = "user_id", nullable = false)		//every user must have profile(can be empty)
+	@JoinColumn(name = "user_id", nullable = false)		//every user must have profile(can't be empty)
 	private SiteUser user;
 	
 	@Column(name = "about", length = 4000)
@@ -45,12 +46,21 @@ public class Profile {
 	@Column(name= "photo_extention", length = 5)
 	private String photoExtention;
 	
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)							//FetchType.EAGER loading profile and interests at the same time
 	@JoinTable(name="profile_interests",
 	joinColumns= {@JoinColumn(name="profile_id")},	
 	inverseJoinColumns ={@JoinColumn(name="interest_id")})
 	@OrderColumn(name="display_order")							//Specifies a column that is used to maintain the persistent order of a list		
 	private Set<Interest> interests;
+	
+	
+	public Profile() {
+		
+	}
+	
+	public Profile(SiteUser user) {								//use for testing
+		this.user = user;
+	}
 	
 	public SiteUser getUser() {
 		return user;
@@ -84,13 +94,17 @@ public class Profile {
 	}
 	
 	public void safeCopyFrom(Profile other) {			//copying only about field or fields which are not confident(copyof profile object)
-			if(other.about != null) {
+			if(other.about != null) {					//is acceptable to display in JSP
 				this.about = other.about;
+			}
+			
+			if(other.interests != null) {				//copying only interest field or fields which are not confident(copyof profile object)
+				this.interests = other.interests;		//is acceptable to display in JSP
 			}
 	}
 
 
-	public void safeMergeFrom(Profile webProfile, PolicyFactory htmlPolicy) {
+	public void safeMergeFrom(Profile webProfile, PolicyFactory htmlPolicy) {		//sanitize copy suitable to save
 		if(webProfile.about != null) {
 			this.about = htmlPolicy.sanitize(webProfile.about);
 		}
@@ -160,6 +174,16 @@ public class Profile {
 	
 	public void setInterests(Set<Interest> interests) {
 		this.interests = interests;
+	}
+
+	public void addInterest(Interest interest) {
+		interests.add(interest);								//adding interests to interest Set
+		
+	}
+
+	public void removeInterest(String interestName) {			//removing interest from Set (interests with same name)
+		interests.remove(new Interest(interestName));
+		
 	}
 	
 	

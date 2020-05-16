@@ -32,9 +32,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.examen.exceptions.ImageTooSmallException;
 import com.examen.exceptions.InvalidFileException;
 import com.examen.model.FileInfo;
+import com.examen.model.Interest;
 import com.examen.model.Profile;
 import com.examen.model.SiteUser;
 import com.examen.service.FileService;
+import com.examen.service.InterestService;
 import com.examen.service.ProfileService;
 import com.examen.service.UserService;
 import com.examen.status.PhotoUploadStatus;
@@ -56,6 +58,9 @@ public class ProfileController {
 	
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private InterestService interestService;
 	
 	@Value("${photo.upload.dir}")			//getting value/path from properties file
 	private String photoUploadDirectory;
@@ -162,7 +167,7 @@ public class ProfileController {
 		Profile profile = profileService.getUserProfile(user);	//getting  current users profile
 		
 		profile.safeMergeFrom(webProfile, htmlPolicy);						//adding ny information  from 'about' field
-																			//and sanitizing html
+																			//and sanitizing html accepting only predifined html tags
 		if(!result.hasErrors()) {
 			profileService.save(profile);						//saving profile with new information
 			modelAndView.setViewName("redirect:/profile");		//redirecting to profile page
@@ -231,6 +236,38 @@ public class ProfileController {
 				.body(new InputStreamResource(Files.newInputStream(photoPath, StandardOpenOption.READ)));              //reading bits from photo file and returning that
 	}
 	
+	@RequestMapping(value ="/save-interest" ,method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> saveInterest(@RequestParam("name") String interestName){
+		
+		SiteUser user = getUser();
+		
+		Profile profile = profileService.getUserProfile(user);
+		
+		String cleanInterestName = htmlPolicy.sanitize(interestName);
+		
+		Interest interest = interestService.createIfNotExist(cleanInterestName);			//create if not exist otherwise returning existing interest
+		
+		
+		profile.addInterest(interest);														//adding iterest	
+		profileService.save(profile);														//saving profile
+		
+		return new ResponseEntity(null,HttpStatus.OK);
+	}
+	@RequestMapping(value ="/delete-interest" ,method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> deleteInterest(@RequestParam("name") String interestName){
+		
+		SiteUser user = getUser();
+		
+		Profile profile = profileService.getUserProfile(user);
+		
+		profile.removeInterest(interestName);					//calling remove methode in profile and removing interest
+			
+		profileService.save(profile);							//saving profile
+		
+		return new ResponseEntity(null,HttpStatus.OK);
+	}
 	
 	
 
