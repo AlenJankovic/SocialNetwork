@@ -24,6 +24,16 @@
 			<div class="panel-body">
 
 				<form:form method="post" modelAttribute="user" class="login-form">
+				
+					<div class="input-group">
+						<form:input type="text" path="firstname" placeholder="First Name"
+							class="form-control" />
+							<span class="input-group-btn"></span>
+						<form:input type="text" path="lastname" placeholder="Last Name	"
+							class="form-control" />
+					
+					
+					</div>
 
 					<div class="input-group">
 						<form:input type="text" path="email" placeholder="Email"

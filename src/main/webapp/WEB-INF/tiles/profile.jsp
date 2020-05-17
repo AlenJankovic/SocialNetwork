@@ -44,7 +44,9 @@
 					<img src="${profilePhoto}" id="profilePhotoImage">
 				</div>
 				<div class="text-center">
-					<a href="#" id="uploadLink">UploadPhoto</a>
+					<c:if test="${ownProfile == true }">
+						<a href="#" id="uploadLink">UploadPhoto</a>
+					</c:if>
 				</div>
 			</div>
 
@@ -66,7 +68,11 @@
 		</div>
 
 		<div class="profile-about-edit">
-			<a href="${editProfileAbout}">edit</a>
+		
+		 <c:if test="${ownProfile == true }">
+		 	<a href="${editProfileAbout}">edit</a>
+		 </c:if>
+			
 		</div>
 
 
@@ -173,7 +179,8 @@ $(document).ready(function(){
 		
 		caseSensitive: false,				   <%--Music and music is same--%>
 		allowSpaces:true,					   <%--allowing spaces in interest name--%>
-		tagLimit:10						       <%--limit of amount interest is 10--%>
+		tagLimit:10,						   <%--limit of amount interest is 10--%>
+		readOnly:'${ownProfile}' == 'false'
 	});								
 	
 	

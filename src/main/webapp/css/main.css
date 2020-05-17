@@ -60,6 +60,11 @@ textarea {
 	font-family: serif;
 	font-style: italic;
 }
+
+.status-update{
+	margin-top: 4em;
+	margin-bottom: 7em;
+}
 .login-form{
 	width: 100%;
 	
@@ -160,8 +165,16 @@ ul#interestList a.tagit-close:hover{
 ul#interestList a.tagit-close:hover > span.text-icon{
 	color:gray;
 }
+div[role=status]{
+	display: none;
+}
+#ui-id-1{
+	display: none !important;
+}
 
-
+#search-button{
+	background-color: orange;
+}
 
 
 

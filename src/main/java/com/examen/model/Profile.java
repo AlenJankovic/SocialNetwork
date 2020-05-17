@@ -185,6 +185,12 @@ public class Profile {
 		interests.remove(new Interest(interestName));
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Profile [id=" + id + ", user=" + user + ", about=" + about + ", photoDirectory=" + photoDirectory
+				+ ", photoName=" + photoName + ", photoExtention=" + photoExtention + ", interests=" + interests + "]";
+	}
 	
 	
 }

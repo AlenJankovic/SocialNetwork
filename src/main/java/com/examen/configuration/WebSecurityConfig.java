@@ -29,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/",
 							 "/about",
 							 "/register",
+							 "/search",
 							 "/registrationconfirmed",
 							 "/invaliduser",
 							 "/expiredtoken",

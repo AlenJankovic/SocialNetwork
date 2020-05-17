@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,20 +44,32 @@ public class SiteUser {
 	@Column(name="enabled")
 	private Boolean enabled = false;
 	
+	@NotNull
+	@Column(name="firstname",length = 30)
+	@Size(min=2 ,max=30,message ="{register.firstname.size}")
+	private String firstname;
+	
+	@NotNull
+	@Column(name="lastname", length = 40)
+	@Size(min=2 ,max=40, message ="{register.lastname.size}")
+	private String lastname;
+	
 
 	@Column(name="role", length=20)
 	private String role;
 	
 	
-	public SiteUser() {
+	public SiteUser() {																		//Hibernate using empty constructor
 		
-	}
+	}	
 	
-	public SiteUser(String email, String password) {				//constructor för testing 
+	public SiteUser(String email, String password , String firstname, String lastname){				//constructor för testing 
 		this.email = email;
-		this.plainPassword = password;
+		this.setPlainPassword(password);
 		this.repeatPassword= password;
 		this.enabled= true;
+		this.firstname = firstname;
+		this.lastname = lastname;
 	}
 	
 	public Long getId() {
@@ -126,7 +139,6 @@ public class SiteUser {
 	}
 
 
-	
 	public Boolean getEnabled() {
 		return enabled;
 	}
@@ -134,6 +146,32 @@ public class SiteUser {
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	@Override
+	public String toString() {
+		return "SiteUser [id=" + id + ", email=" + email + ", plainPassword=" + plainPassword + ", password=" + password
+				+ ", repeatPassword=" + repeatPassword + ", enabled=" + enabled + ", firstname=" + firstname
+				+ ", lastname=" + lastname + ", role=" + role + "]";
 	}
 	
 	
