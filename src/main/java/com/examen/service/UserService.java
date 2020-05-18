@@ -13,11 +13,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.examen.model.SiteUser;
-import com.examen.model.TokenType;
-import com.examen.model.UserDao;
-import com.examen.model.VerificationDao;
-import com.examen.model.VerificationToken;
+import com.examen.model.entity.SiteUser;
+import com.examen.model.entity.TokenType;
+import com.examen.model.entity.VerificationToken;
+import com.examen.model.repository.UserDao;
+import com.examen.model.repository.VerificationDao;
 
 @Service
 public class UserService implements UserDetailsService{

@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import com.examen.model.Profile;
-import com.examen.model.ProfileDao;
-import com.examen.model.SiteUser;
+import com.examen.model.entity.Profile;
+import com.examen.model.entity.SiteUser;
+import com.examen.model.repository.ProfileDao;
 
 
 

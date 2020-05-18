@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							 "/invaliduser",
 							 "/expiredtoken",
 							 "/verifyemail",
+							 "/profilephoto/*",
 							 "/confirmregister"
 							 )
 				.permitAll() 			// Permitting any user to have access to homepage
@@ -51,7 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							 "/profile/*",
 							 "/edit-profile-about",
 							 "/upload-profile-photo",
-							 "/profilephoto/*",
 							 "/save-interest",
 							 "/delete-interest"
 								)

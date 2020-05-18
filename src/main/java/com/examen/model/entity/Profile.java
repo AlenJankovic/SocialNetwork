@@ -1,4 +1,4 @@
-package com.examen.model;
+package com.examen.model.entity;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import org.owasp.html.PolicyFactory;
+
+import com.examen.model.dto.FileInfo;
 
 @Entity
 @Table(name="profile")

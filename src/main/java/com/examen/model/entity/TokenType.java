@@ -1,4 +1,4 @@
-package com.examen.model;
+package com.examen.model.entity;
 
 public enum TokenType {
 	REGISTRATION,

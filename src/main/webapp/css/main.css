@@ -176,6 +176,28 @@ div[role=status]{
 	background-color: orange;
 }
 
+.results-photo{
+	display: inline-block;
+}
 
+.results-details{
+	display: inline-block;
+	margin-left: 20px;
+}
+.results-name{
+	font-weight: bold;
+	
+}
+.register-prompt{
+	font-size: 1.7em;
+	font-weight: bold;
 
-
+}
+.results-interests{
+	font-size: 1em;
+	font-weight: bold;
+}
+.person-row{
+	border: threedhighlight solid;
+	margin-bottom: 5px;
+}

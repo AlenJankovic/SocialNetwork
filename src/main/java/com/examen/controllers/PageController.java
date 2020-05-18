@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.examen.model.StatusUpdate;
+import com.examen.model.entity.StatusUpdate;
 import com.examen.service.StatusUpdateService;
 
 @Controller

@@ -31,10 +31,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.examen.exceptions.ImageTooSmallException;
 import com.examen.exceptions.InvalidFileException;
-import com.examen.model.FileInfo;
-import com.examen.model.Interest;
-import com.examen.model.Profile;
-import com.examen.model.SiteUser;
+import com.examen.model.dto.FileInfo;
+import com.examen.model.entity.Interest;
+import com.examen.model.entity.Profile;
+import com.examen.model.entity.SiteUser;
 import com.examen.service.FileService;
 import com.examen.service.InterestService;
 import com.examen.service.ProfileService;

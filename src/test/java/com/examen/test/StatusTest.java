@@ -15,8 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.examen.App;
-import com.examen.model.StatusUpdate;
-import com.examen.model.StatusUpdateDao;
+import com.examen.model.entity.StatusUpdate;
+import com.examen.model.repository.StatusUpdateDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = App.class)

@@ -3,7 +3,7 @@ package com.examen.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.examen.model.SiteUser;
+import com.examen.model.entity.SiteUser;
 
 public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch, SiteUser> {
 

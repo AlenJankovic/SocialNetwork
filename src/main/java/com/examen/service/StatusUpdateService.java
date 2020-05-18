@@ -7,8 +7,8 @@ import org.springframework.data.domain.Sort;
 
 import org.springframework.stereotype.Service;
 
-import com.examen.model.StatusUpdate;
-import com.examen.model.StatusUpdateDao;
+import com.examen.model.entity.StatusUpdate;
+import com.examen.model.repository.StatusUpdateDao;
 
 @Service
 public class StatusUpdateService {

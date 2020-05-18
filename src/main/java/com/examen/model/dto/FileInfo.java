@@ -1,4 +1,4 @@
-package com.examen.model;
+package com.examen.model.dto;
 
 
 public class FileInfo {

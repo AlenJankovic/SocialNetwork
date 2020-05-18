@@ -5,6 +5,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <c:url var="loginUrl" value="/login"/>
+<c:url var="registerUrl" value="/register"/>
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3 col-sd-8 col-sd-offset-2 register-prompt">
+		Please log in or <a href="${registerUrl}">click here to create account.</a>
+	</div>
+</div>
 
 <div class="row">
 

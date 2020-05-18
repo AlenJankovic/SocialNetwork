@@ -1,4 +1,4 @@
-package com.examen.model;
+package com.examen.model.entity;
 
 import java.util.Calendar;
 import java.util.Date;

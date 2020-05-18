@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.examen.model.SiteUser;
-import com.examen.model.VerificationToken;
+import com.examen.model.entity.SiteUser;
+import com.examen.model.entity.VerificationToken;
 import com.examen.service.EmailService;
 import com.examen.service.UserService;
 

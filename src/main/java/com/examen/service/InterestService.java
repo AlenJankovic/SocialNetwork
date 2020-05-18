@@ -3,8 +3,8 @@ package com.examen.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.examen.model.Interest;
-import com.examen.model.InterestDao;
+import com.examen.model.entity.Interest;
+import com.examen.model.repository.InterestDao;
 
 @Service
 public class InterestService {
