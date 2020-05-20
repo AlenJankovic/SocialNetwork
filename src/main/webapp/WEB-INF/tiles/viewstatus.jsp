@@ -18,8 +18,8 @@
 <%--Displaying status uppdates --%>	
 <c:forEach  var="statusUpdate"  items="${page.content}">	<%--looping throw page content (status updates)--%>
 
-			<c:url var="editLink" value="/editstatus?id=${statusUpdate.id }"></c:url>
-			<c:url var="deleteLink" value="/deletestatus?id=${statusUpdate.id }"></c:url>
+			<c:url var="editLink" value="/editstatus?id=${statusUpdate.id}"/>
+			<c:url var="deleteLink" value="/deletestatus?id=${statusUpdate.id}"/>
 
 			<div class="panel panel-default">
 
@@ -36,7 +36,7 @@
 					<div>${statusUpdate.text}</div>
 
 					<div class="edit-links pull-right">
-						<a href="${editLink}">edit</a> | <a onclick="return confirm('Do you want delete status update');" href="${deleteLink}">delete</a>
+						<a href="${editLink}">edit</a> | <a onclick="return confirm('Do you want delete status update?');"href="${deleteLink}">delete</a>
 					</div>
 				</div>
 			</div>

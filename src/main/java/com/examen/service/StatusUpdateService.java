@@ -1,6 +1,7 @@
 package com.examen.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,10 +14,12 @@ import com.examen.model.repository.StatusUpdateDao;
 @Service
 public class StatusUpdateService {
 	
-	private final static int PAGESIZE= 10;	
+	@Value("${status.pagesize}")
+	private int pageSize;	
 	
 	@Autowired
 	private StatusUpdateDao statusUpdateDao;
+	
 	//Saving status update
 	public void save(StatusUpdate statusUpdate) {			//save status update
 		statusUpdateDao.save(statusUpdate);
@@ -29,7 +32,7 @@ public class StatusUpdateService {
 	
 	//Pagination-getting page
 	public Page<StatusUpdate> getPage(int pageNumber){
-		PageRequest request = PageRequest.of(pageNumber -1, PAGESIZE, Sort.Direction.DESC, "added"); //making request of given page,
+		PageRequest request = PageRequest.of(pageNumber -1, pageSize, Sort.Direction.DESC, "added"); //making request of given page,
 																								  //PAGESIZE(amount entity's on page),sorting results in desc order on date) 0 based
 		 	 	
 		return statusUpdateDao.findAll(request);  //Returns a Page of entities meeting the paging restriction provided in the Pageable object

@@ -1,10 +1,9 @@
 package com.examen.controllers;
 
-import java.util.Date;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,7 +23,37 @@ public class PageController {
 	@Autowired
 	private StatusUpdateService statusUpdateService;
 	
+
 	@RequestMapping("/")
+	ModelAndView home(ModelAndView modelAndView) {
+		
+		StatusUpdate statusUpdate = statusUpdateService.getLatest();
+		
+		modelAndView.getModel().put("statusUpdate", statusUpdate);
+		
+		modelAndView.setViewName("app.homepage");
+		
+		
+		return modelAndView;	
+	}
+	
+
+	@RequestMapping("/about")
+	String about() {
+		return "app.about";
+	}
+	
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	/*	@RequestMapping("/")
 	String home() {
 		return "app.homepage";
 		
@@ -34,7 +63,7 @@ public class PageController {
 	String about() {
 		return "app.about";
 	}
-	
+*/	
 	
 
-}
+

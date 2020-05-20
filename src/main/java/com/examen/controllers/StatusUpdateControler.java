@@ -53,7 +53,7 @@ public class StatusUpdateControler {
 		
 		modelAndView.setViewName("redirect:/viewstatus");
 		return modelAndView;
-	}
+	}		
 
 	@RequestMapping(value = "/viewstatus", method = RequestMethod.GET)
 	ModelAndView viewStatus(ModelAndView modelAndView, @RequestParam(name ="p", defaultValue = "1") int pageNumber) {

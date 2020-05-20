@@ -126,7 +126,7 @@ textarea {
 }
 #profile-photo-status{
 	position: absolute;
-	top: 10px;
+	top: 60px;
 	left:65px;
 	font-weight: bold;
 	color:maroon;
@@ -189,7 +189,7 @@ div[role=status]{
 	
 }
 .register-prompt{
-	font-size: 1.7em;
+	font-size: 1.3em;
 	font-weight: bold;
 
 }
@@ -198,6 +198,9 @@ div[role=status]{
 	font-weight: bold;
 }
 .person-row{
-	border: threedhighlight solid;
+	border: #fed889 solid;
 	margin-bottom: 5px;
+}
+.text-line{
+	margin-left: 370px;
 }

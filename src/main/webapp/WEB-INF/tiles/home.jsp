@@ -7,8 +7,10 @@
 <div class="row status-update">
 	<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
 
-		<div class="homepage-status">Status Update :
-			${statusUpdate.text}</div>
+		<div class="homepage-status">
+			<h3>Status Update :</h3>
+			${statusUpdate.text}
+		</div>
 	</div>
 </div>
 
